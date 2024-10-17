@@ -2,6 +2,7 @@ package com.example.metrix.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -13,20 +14,28 @@ public class Funcion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String pelicula;
+    @ManyToOne
+    @JoinColumn(name = "counstom_id")
+    @NotNull(message = "El nombre no puede ser nulo")
+    private Pelicula pelicula;
+
+    @NotNull(message = "La fecha no puede ser nula")
     private Date fecha;
+    @NotNull
     private int hora;
-    private int duracion;
+
+    @NotNull
     @Column(name = "precio_boleto" )
     private double precioBoleto;
+
+    @NotNull
     private String estado;
 
-    public Funcion(Integer id, String pelicula, Date fecha, int hora, int duracion, double precioBoleto, String estado) {
+    public Funcion(Integer id, Pelicula pelicula, Date fecha, int hora, double precioBoleto, String estado) {
         this.id = id;
         this.pelicula = pelicula;
         this.fecha = fecha;
         this.hora = hora;
-        this.duracion = duracion;
         this.precioBoleto = precioBoleto;
         this.estado = estado;
     }
@@ -42,11 +51,11 @@ public class Funcion {
         this.id = id;
     }
 
-    public String getPelicula() {
+    public Pelicula getPelicula() {
         return pelicula;
     }
 
-    public void setPelicula(String pelicula) {
+    public void setPelicula(Pelicula pelicula) {
         this.pelicula = pelicula;
     }
 
@@ -64,14 +73,6 @@ public class Funcion {
 
     public void setHora(int hora) {
         this.hora = hora;
-    }
-
-    public int getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
     }
 
     public double getPrecioBoleto() {
