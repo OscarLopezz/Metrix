@@ -3,7 +3,7 @@ package com.example.metrix.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -15,12 +15,12 @@ public class Funcion {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "counstom_id")
+    @JoinColumn(name = "Pelicula_id")
     @NotNull(message = "El nombre no puede ser nulo")
     private Pelicula pelicula;
 
     @NotNull(message = "La fecha no puede ser nula")
-    private Date fecha;
+    private LocalDate fecha;
     @NotNull
     private int hora;
 
@@ -31,7 +31,7 @@ public class Funcion {
     @NotNull
     private String estado;
 
-    public Funcion(Integer id, Pelicula pelicula, Date fecha, int hora, double precioBoleto, String estado) {
+    public Funcion(Integer id, Pelicula pelicula, LocalDate fecha, int hora, double precioBoleto, String estado) {
         this.id = id;
         this.pelicula = pelicula;
         this.fecha = fecha;
@@ -59,11 +59,11 @@ public class Funcion {
         this.pelicula = pelicula;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

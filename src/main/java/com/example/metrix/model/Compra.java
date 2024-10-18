@@ -23,4 +23,36 @@ public class Compra {
     @ManyToOne
     private Boleto boleto;
 
+    public Integer getIdCompra() {
+        return idCompra;
+    }
+
+    public void setIdCompra(Integer idCompra) {
+        this.idCompra = idCompra;
+    }
+
+    @NotNull(message = "EL MONTO NO PUEDE SER NULO")
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(@NotNull(message = "EL MONTO NO PUEDE SER NULO") double monto) {
+        this.monto = monto;
+    }
+
+    public @NotNull(message = "EL ID FUNCION NO PUEDE SER NULO") Funcion getFuncion() {
+        return funcion;
+    }
+
+    public void setFuncion(@NotNull(message = "EL ID FUNCION NO PUEDE SER NULO") Funcion funcion) {
+        this.funcion = funcion;
+    }
+
+    public @NotNull Boleto getBoleto() {
+        return boleto;
+    }
+
+    public void setBoleto(@NotNull Boleto boleto) {
+        this.boleto = boleto;
+    }
 }

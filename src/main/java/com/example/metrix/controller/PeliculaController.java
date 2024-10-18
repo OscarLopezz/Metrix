@@ -1,9 +1,7 @@
 package com.example.metrix.controller;
 
-import com.example.metrix.model.Funcion;
 import com.example.metrix.model.Pelicula;
 import com.example.metrix.repository.PeliculaRepository;
-import com.example.metrix.service.PeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

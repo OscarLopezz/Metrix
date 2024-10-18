@@ -19,5 +19,29 @@ public class Boleto {
     @NotNull
     private int coluna;
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @NotNull
+    public int getFila() {
+        return fila;
+    }
+
+    public void setFila(@NotNull int fila) {
+        this.fila = fila;
+    }
+
+    @NotNull
+    public int getColuna() {
+        return coluna;
+    }
+
+    public void setColuna(@NotNull int coluna) {
+        this.coluna = coluna;
+    }
 }

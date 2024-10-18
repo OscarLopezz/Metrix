@@ -1,5 +1,6 @@
 package com.example.metrix.controller;
 
+import com.example.metrix.clases.FuncionConPeliculaDTO;
 import com.example.metrix.model.Funcion;
 import com.example.metrix.model.Pelicula;
 import com.example.metrix.repository.FuncionRepository;
@@ -36,33 +37,38 @@ public class FuncionController {
         Optional<Funcion> funcion = funcionRepository.findById(id);
         return funcion.isPresent() ? ResponseEntity.ok(funcion.get()) : ResponseEntity.notFound().build();
     }
+
     @CrossOrigin
     @PostMapping("registrar_funcion")
-    public ResponseEntity<Funcion> registrarFuncion(@RequestBody Funcion funcion, Pelicula pelicula){
-        Funcion f = funcionRepository.save(funcion);
-        Pelicula p = peliculaRepository.save(pelicula);
-        return ResponseEntity.status(HttpStatus.CREATED).body(f);
+    public ResponseEntity<Funcion> registrarFuncion(@RequestBody FuncionConPeliculaDTO funcionDTO){
+        Pelicula pelicula = funcionDTO.getPelicula();
+        Funcion funcion = funcionDTO.getFuncion();
 
+
+        Pelicula peliculaGuardada = peliculaRepository.save(pelicula);
+
+
+        funcion.setPelicula(peliculaGuardada);
+
+
+        Funcion funcionGuardada = funcionRepository.save(funcion);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(funcionGuardada);
     }
 
     @CrossOrigin
     @PostMapping("registrar_funcion_pelicula")
-    public ResponseEntity<Funcion> registrarFuncion(@RequestBody Funcion funcion , Integer idPelicula){
+    public ResponseEntity<Funcion> registrarFuncion(@RequestBody Funcion funcion, @RequestParam Integer idPelicula) {
         Optional<Pelicula> peliculaOptional = peliculaRepository.findById(idPelicula);
-        if (!peliculaOptional.isPresent()){
+        if (!peliculaOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
-        Funcion f = new Funcion();
-        f.setPelicula(peliculaOptional.get());
-        f.setFecha(new Date());
-        f.setHora(funcion.getHora());
-        f.setEstado(funcion.getEstado());
-        f.setPrecioBoleto(funcion.getPrecioBoleto());
-
-        Funcion f1 = funcionRepository.save(f);
+        funcion.setPelicula(peliculaOptional.get());
+        Funcion f1 = funcionRepository.save(funcion);
         return ResponseEntity.status(HttpStatus.CREATED).body(f1);
     }
+
 
     @CrossOrigin
     @DeleteMapping("/borrar_funcion/{id}")
