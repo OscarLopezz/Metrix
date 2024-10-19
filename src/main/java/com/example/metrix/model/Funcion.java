@@ -3,8 +3,10 @@ package com.example.metrix.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.aspectj.bridge.IMessage;
+
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @Entity
 public class Funcion {
@@ -21,14 +23,16 @@ public class Funcion {
 
     @NotNull(message = "La fecha no puede ser nula")
     private LocalDate fecha;
+
     @NotNull
+    @NotNull(message = "La hora no puede ser nula")
     private int hora;
 
-    @NotNull
-    @Column(name = "precio_boleto" )
+    @NotNull(message = "El precio del boleto no puede ser nulo")
+    @Column(name = "precio_boleto")
     private double precioBoleto;
 
-    @NotNull
+    @NotNull(message = "El estado no puede ser nulo")
     private String estado;
 
     public Funcion(Integer id, Pelicula pelicula, LocalDate fecha, int hora, double precioBoleto, String estado) {

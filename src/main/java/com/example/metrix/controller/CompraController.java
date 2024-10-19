@@ -11,18 +11,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-//
-//@RestController
-//@RequestMapping("api/compra")
-//public class CompraController {
-//    @Autowired
-//    private CompraRepository compraRepository;
-//
-//    @CrossOrigin
-//    @PostMapping("registrar-compra")
-//    public RequestEntity<Compra> registrarCompra(@RequestBody Compra compra) {
-//        Compra compra1 = compraRepository.save(compra);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(compra1);
-//    }
-//
-//}
+
+@RestController
+@RequestMapping("api/compra")
+public class CompraController {
+    @Autowired
+    private CompraRepository compraRepository;
+
+    @CrossOrigin
+    @PostMapping("registrar-compra")
+    public ResponseEntity<Compra> registrarCompra(@RequestBody Compra compra) {
+        Compra compra1 = compraRepository.save(compra);
+        return ResponseEntity.status(HttpStatus.CREATED).body(compra1);
+    }
+
+}

@@ -1,9 +1,6 @@
 package com.example.metrix.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -18,6 +15,19 @@ public class Boleto {
 
     @NotNull
     private int coluna;
+
+    @ManyToOne
+    @JoinColumn(name = "funcion_id")
+    private Funcion funcion;
+
+
+    public Funcion getFuncion() {
+        return funcion;
+    }
+
+    public void setFuncion(Funcion funcion) {
+        this.funcion = funcion;
+    }
 
     public Integer getId() {
         return id;
