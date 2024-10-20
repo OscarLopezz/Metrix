@@ -1,11 +1,12 @@
 package com.example.metrix.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.aspectj.bridge.IMessage;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -35,6 +36,17 @@ public class Funcion {
     @NotNull(message = "El estado no puede ser nulo")
     private String estado;
 
+    @Column(name = "dinero_recaudado")
+    private Double dineroRecaudado = 0.0;
+
+    @Column(name = "boletos_vendidos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcion")
+    @JsonManagedReference(value = "funcion-boletos")
+    private List<Boleto> boletosVendidos = new ArrayList<>();
+
+
+
+
     public Funcion(Integer id, Pelicula pelicula, LocalDate fecha, int hora, double precioBoleto, String estado) {
         this.id = id;
         this.pelicula = pelicula;
@@ -42,6 +54,24 @@ public class Funcion {
         this.hora = hora;
         this.precioBoleto = precioBoleto;
         this.estado = estado;
+        this.dineroRecaudado = 0.0;
+        this.boletosVendidos = new ArrayList<Boleto>();
+    }
+
+    public Double getDineroRecaudado() {
+        return dineroRecaudado;
+    }
+
+    public void setDineroRecaudado(Double dineroRecaudado) {
+        this.dineroRecaudado = dineroRecaudado;
+    }
+
+    public List<Boleto> getBoletosVendidos() {
+        return boletosVendidos;
+    }
+
+    public void setBoletosVendidos(List<Boleto> boletosVendidos) {
+        this.boletosVendidos = boletosVendidos;
     }
 
     public Funcion() {

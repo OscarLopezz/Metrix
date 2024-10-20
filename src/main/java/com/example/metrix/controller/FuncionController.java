@@ -1,6 +1,7 @@
 package com.example.metrix.controller;
 
 import com.example.metrix.clases.FuncionConPeliculaDTO;
+import com.example.metrix.model.Boleto;
 import com.example.metrix.model.Funcion;
 import com.example.metrix.model.Pelicula;
 import com.example.metrix.repository.FuncionRepository;
@@ -29,6 +30,7 @@ public class FuncionController {
     }
 
     //ResponseEntity<Funcion> esto es un tipo de dato para retornar si no se encuentra la pelicula
+    //o ResponseEntity<?> puede responder lo que sea
     @CrossOrigin
     @GetMapping("/detalle_funcion/{id}")
     public ResponseEntity<Funcion> detallesFuncion(@PathVariable Integer id){
@@ -75,9 +77,15 @@ public class FuncionController {
 
     @CrossOrigin
     @DeleteMapping("/borrar_funcion/{id}")
-    public ResponseEntity<Void> borrarFuncion(@PathVariable Integer id){
-        if(!funcionRepository.existsById(id)){
+    public ResponseEntity<?> borrarFuncion(@PathVariable Integer id){
+        Optional<Funcion> funcionOptional = funcionRepository.findById(id);
+        if(!funcionOptional.isPresent()){
             return ResponseEntity.notFound().build();
+        }
+        Funcion funcion = funcionOptional.get();
+        if (!funcion.getBoletosVendidos().isEmpty()){
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("No se puede eliminar la función porque ya tiene boletos vendidos.");
         }
         funcionRepository.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -92,6 +100,43 @@ public class FuncionController {
         detallesNuevfuncion.setId(id);
         Funcion nuevosDatos = funcionRepository.save(detallesNuevfuncion);
         return ResponseEntity.ok(nuevosDatos);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("borrar-todas")
+    public ResponseEntity<Void> borrarTodasFunciones(){
+        funcionRepository.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
+
+    @CrossOrigin
+    @GetMapping("/cantidad-boletos/{id}")
+    public ResponseEntity<?> obtenerCantidadBoletosVendidos(@PathVariable Integer id) {
+        Optional<Funcion> funcionOptional = funcionRepository.findById(id);
+        if (!funcionOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La función no existe.");
+        }
+
+        Funcion funcion = funcionOptional.get();
+        int cantidadBoletosVendidos = funcion.getBoletosVendidos().size();
+        return ResponseEntity.ok(cantidadBoletosVendidos);
+    }
+    @CrossOrigin
+    @GetMapping("/{id}/boletos")//este metodo es para obetenr los boletos vendidos
+    public ResponseEntity<?> obtenerBoletosVendidos(@PathVariable Integer id) {
+        Optional<Funcion> funcionOptional = funcionRepository.findById(id);
+        if (!funcionOptional.isPresent()) {
+            return ResponseEntity.status(404).body("La función no existe.");
+        }
+
+        Funcion funcion = funcionOptional.get();
+        // Opción 1: Usar la lista de boletosVendidos en la función
+        List<Boleto> boletosVendidos = funcion.getBoletosVendidos();
+
+        // Opción 2: Usar el repositorio de boletos (más eficiente si hay muchos boletos)
+        // List<Boleto> boletosVendidos = boletoRepository.findByFuncion(funcion);
+
+        return ResponseEntity.ok(boletosVendidos);
     }
 
 }

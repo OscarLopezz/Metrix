@@ -1,8 +1,13 @@
 package com.example.metrix.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -20,8 +25,17 @@ public class Compra {
     private Funcion funcion;
 
     @NotNull
-    @ManyToOne
-    private Boleto boleto;
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compra")
+    private List<Boleto> boletos = new ArrayList<>();
+
+    public @NotNull List<Boleto> getBoletos() {
+        return boletos;
+    }
+
+    public void setBoletos(@NotNull List<Boleto> boletos) {
+        this.boletos = boletos;
+    }
 
     public Integer getIdCompra() {
         return idCompra;
@@ -48,11 +62,11 @@ public class Compra {
         this.funcion = funcion;
     }
 
-    public @NotNull Boleto getBoleto() {
-        return boleto;
+    public @NotNull  List<Boleto> getBoleto() {
+        return boletos;
     }
 
-    public void setBoleto(@NotNull Boleto boleto) {
-        this.boleto = boleto;
+    public void setBoleto(@NotNull  List<Boleto> boletos) {
+        this.boletos = boletos;
     }
 }
